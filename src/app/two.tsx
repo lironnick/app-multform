@@ -1,21 +1,27 @@
 import { useRef } from 'react';
 import { View, Text, TextInput } from 'react-native';
+import { router } from 'expo-router';
 import { useForm } from 'react-hook-form';
 
 import { Input } from '@/components/Input';
 import { Button } from '@/components/Button';
-import { router } from 'expo-router';
+
+import { useAccountForm } from '@/hooks/useAccountForm';
+import { AccountProps } from '@/contexts/AccountFormContext';
+import { Progress } from '@/components/progress';
 
 export default function FormStepTwo() {
+  const { updateFormData } = useAccountForm();
+
   const {
     control,
     handleSubmit,
     formState: { errors },
-  } = useForm();
+  } = useForm<AccountProps>();
 
-  // console.log(errors);
-  function handleNextStep(data: any) {
+  function handleNextStep(data: AccountProps) {
     console.log(data);
+    updateFormData(data);
     router.push('/tree');
   }
 
@@ -25,6 +31,7 @@ export default function FormStepTwo() {
     <View
       style={{ flex: 1, backgroundColor: 'F4F5F6', justifyContent: 'center', padding: 24, gap: 16 }}
     >
+      <Progress progress={60} />
       <Text style={{ fontSize: 24, fontWeight: '700', marginBottom: 44 }}>Suas informações</Text>
 
       <Input
@@ -47,7 +54,7 @@ export default function FormStepTwo() {
           returnKeyType: 'next',
         }}
       />
-      {/* ^((\\+\\d{2}\\s)?\\(\\d{2}\\)\\s?\\d{4}\\d?\\-\\d{4})?$ */}
+
       <Input
         ref={phoneRef}
         error={errors.phone?.message}

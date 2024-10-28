@@ -1,21 +1,30 @@
 import { useRef } from 'react';
 import { View, Text, TextInput } from 'react-native';
 import { useForm } from 'react-hook-form';
+import { router } from 'expo-router';
 
 import { Input } from '@/components/Input';
 import { Button } from '@/components/Button';
+import { Progress } from '@/components/progress';
+
+import { useAccountForm } from '@/hooks/useAccountForm';
+import { AccountProps } from '@/contexts/AccountFormContext';
 
 export default function FormStepTree() {
+  const { updateFormData } = useAccountForm();
+
   const {
     control,
     handleSubmit,
     formState: { errors },
     getValues,
-  } = useForm();
+  } = useForm<AccountProps>();
 
   // console.log(errors);
-  function handleNextStep(data: any) {
+  function handleNextStep(data: AccountProps) {
     console.log(data);
+    updateFormData(data);
+    router.push('/finish');
   }
 
   function validationPasswordConfirmation(passwordConfirmation: string) {
@@ -30,6 +39,8 @@ export default function FormStepTree() {
     <View
       style={{ flex: 1, backgroundColor: 'F4F5F6', justifyContent: 'center', padding: 24, gap: 16 }}
     >
+      <Progress progress={90} />
+
       <Text style={{ fontSize: 24, fontWeight: '700', marginBottom: 44 }}>Escolha sua senha</Text>
 
       <Input
