@@ -1,5 +1,4 @@
 import { View, Text } from 'react-native';
-
 import { useFormContext } from 'react-hook-form';
 
 import { AccountProps } from '@/@types/account';
