@@ -1,28 +1,24 @@
 import { useRef } from 'react';
 import { View, Text, TextInput } from 'react-native';
-import { useForm } from 'react-hook-form';
+import { useFormContext } from 'react-hook-form';
 import { router } from 'expo-router';
 
 import { Input } from '@/components/Input';
 import { Button } from '@/components/Button';
 
-import { AccountProps } from '@/contexts/AccountFormContext';
-import { useAccountForm } from '@/hooks/useAccountForm';
 import { Progress } from '@/components/progress';
+import { AccountProps } from '@/@types/account';
 
 export default function FormStepOne() {
-  const { updateFormData } = useAccountForm();
-
   const {
     control,
     handleSubmit,
     formState: { errors },
-  } = useForm<AccountProps>();
+  } = useFormContext<AccountProps>();
 
   // console.log(errors);
   function handleNextStep(data: AccountProps) {
     console.log(data);
-    updateFormData(data);
     router.push('/two');
   }
 
